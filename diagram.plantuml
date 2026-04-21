@@ -1,0 +1,85 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' =======================
+' USERS & ROLES
+' =======================
+class User {
+  +id: Long
+  +username: String
+  +role: UserRoleEnum
+  --
+  auditLogs: List<AuditLog>
+  transactions: List<Transaction>
+}
+
+' =======================
+' PRODUCTS
+' =======================
+class Product {
+  +id: Long
+  +name: String
+  +nsnCode: String
+  +description: String
+  +parLevel: int
+  +active: boolean
+  --
+  batches: List<Batch>
+  transactions: List<Transaction>
+}
+
+' =======================
+' BATCHES (LOT TRACKING)
+' =======================
+class Batch {
+  +id: Long
+  +lotNumber: String
+  +quantity: int
+  +expirationDate: LocalDateTime
+  +location: String
+  --
+  product: Product
+  transactions: List<Transaction>
+}
+
+' =======================
+' TRANSACTIONS (STOCK IN/OUT)
+' =======================
+class Transaction {
+  +id: Long
+  +type: TransactionTypeEnum
+  +quantity: int
+  +createdAt: Instant
+  --
+  user: User
+  product: Product
+  batch: Batch
+}
+
+' =======================
+' AUDIT LOGS
+' =======================
+class AuditLog {
+  +id: Long
+  +action: String
+  +tableName: String
+  +oldValue: String
+  +newValue: String
+  +createdAt: Instant
+  --
+  user: User
+}
+
+' =======================
+' RELATIONSHIPS
+' =======================
+
+Product "1" <--> "0..*" Batch : contains
+Product "1" <--> "0..*" Transaction : tracked by
+
+User "1" <--> "0..*" Transaction : performs
+User "1" <--> "0..*" AuditLog : generates
+
+Batch "1" <--> "0..*" Transaction : affects
+
+@enduml
