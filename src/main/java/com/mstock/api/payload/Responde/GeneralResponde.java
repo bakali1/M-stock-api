@@ -15,5 +15,5 @@ public class GeneralResponde<T> {
     T data;
     String msg;
     @JsonIgnore
-    int httpcode;
+    int status;
 }

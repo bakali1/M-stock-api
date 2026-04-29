@@ -33,6 +33,7 @@ public interface ProductMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "batches", ignore = true)
     @Mapping(target = "transactions", ignore = true)
+    @Mapping(target = "version", ignore = true)
     void updateProductFromRequest(ProductRequest request, @MappingTarget Product product);
 
     @BeanMapping(resultType=ProductDTO.class,nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

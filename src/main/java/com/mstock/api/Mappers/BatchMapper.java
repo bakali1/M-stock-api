@@ -34,12 +34,18 @@ public interface BatchMapper {
     @Mapping(target = "transactions", ignore = true)
     @Mapping(target = "product", ignore = true)
     @Mapping(target = "version", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     void updateBatchFromRequest(BatchRequest request, @MappingTarget Batch batch);
 
     /**
      * Convert Batch entity to BatchDTO
      */
     @BeanMapping(resultType = BatchDTO.class, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "productId", source = "batch.product.id")
+    @Mapping(target = "productName", source = "batch.product.name")
+    @Mapping(target = "nsnCode", source = "batch.product.nsnCode")
+    @Mapping(target = "daysUntilExpiration", ignore = true)
+    @Mapping(target = "expirationAlertLevel", ignore = true)
     BatchDTO toBatchDTO(Batch batch);
 
     /**

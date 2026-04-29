@@ -18,11 +18,15 @@ public interface AuditLogMapper {
      * Convert AuditLog entity to AuditLogDTO
      */
     @BeanMapping(resultType = AuditLogDTO.class, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "userId", source = "auditLog.user.id")
+    @Mapping(target = "userName", source = "auditLog.user.username")
     AuditLogDTO toAuditLogDTO(AuditLog auditLog);
 
     /**
      * Convert list of AuditLog entities to list of AuditLogDTOs
      */
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "userId", source = "auditLog.user.id")
+    @Mapping(target = "userName", source = "auditLog.user.username")
     List<AuditLogDTO> toAuditLogDTOList(List<AuditLog> auditLogs);
 }

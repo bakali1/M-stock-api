@@ -28,7 +28,9 @@ public class User {
     private long id;
     private String username;
     private UserRoleEnum role;
-
+    private String email;
+    private String password;
+    private Boolean active;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuditLog> auditLogs;
 
