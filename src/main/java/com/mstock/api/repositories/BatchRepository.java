@@ -74,12 +74,16 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
     /**
      * Search batches by lot number (partial match)
      */
-    @Query("SELECT b FROM Batch b WHERE LOWER(b.lotNumber) LIKE LOWER(CONCAT('%', :lotNumber, '%')) AND b.status = :status")
+    @Query("SELECT b FROM Batch b WHERE UPPER(b.lotNumber) LIKE UPPER(CONCAT('%', :lotNumber, '%')) AND b.status = :status")
     List<Batch> searchByLotNumberLike(@Param("lotNumber") String lotNumber, @Param("status") BatchStatusEnum status);
 
     /**
      * Search batches by product NSN code and status
      */
-    @Query("SELECT b FROM Batch b WHERE b.product.nsnCode = :nsnCode AND b.status = :status")
+    /**
+     * Search batches by partial product NSN code and exact status
+     */
+    
+    @Query("SELECT b FROM Batch b WHERE UPPER(b.product.nsnCode) LIKE UPPER(CONCAT('%', :nsnCode, '%')) AND b.status = :status")
     List<Batch> findByProductNsnCodeAndStatus(@Param("nsnCode") String nsnCode, @Param("status") BatchStatusEnum status);
 }

@@ -1,10 +1,10 @@
 package com.mstock.api.services;
 
-import com.mstock.api.DTO.BatchDTO;
-import com.mstock.api.payload.Responde.GeneralResponde;
-import com.mstock.api.payload.Request.BatchRequest;
-
 import java.util.List;
+
+import com.mstock.api.DTO.BatchDTO;
+import com.mstock.api.payload.Request.BatchRequest;
+import com.mstock.api.payload.Responde.GeneralResponde;
 
 /**
  * BatchService Interface
