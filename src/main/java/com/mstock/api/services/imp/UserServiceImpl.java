@@ -3,6 +3,7 @@ package com.mstock.api.services.imp;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mstock.api.DTO.UserDTO;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public GeneralResponde<?> createUser(RegisterRequest request){
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -32,6 +34,9 @@ public class UserServiceImpl implements UserService{
 
         User user = new User();
         userMapper.updateUserFromRequest(request, user);
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
         UserDTO saveduser = userMapper.toUserDTO(userRepository.save(user));
 
         return GeneralResponde.<UserDTO>builder()
@@ -88,4 +93,3 @@ public class UserServiceImpl implements UserService{
                                 .build(); 
     }
 }
-

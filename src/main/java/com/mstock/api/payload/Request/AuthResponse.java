@@ -1,4 +1,4 @@
-package com.mstock.api.DTO;
+package com.mstock.api.payload.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO {
-    private Long id;
-    private String username;
-    private String email;
-    private String role;
-    private Boolean active;
+public class AuthResponse {
+    private String token;
+    private String tokenType;
 }

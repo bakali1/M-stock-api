@@ -30,15 +30,16 @@ public interface UserMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
     @Mapping(target = "auditLogs", ignore = true)
     @Mapping(target = "transactions", ignore = true)
     void updateUserFromRequest(RegisterRequest request,@MappingTarget User user);
     
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "role", expression = "java(user.getRole() != null ? user.getRole().name() : null)")
     UserDTO toUserDTO(User user);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "role", expression = "java(user.getRole() != null ? user.getRole().name() : null)")
     List<UserDTO> toUserDTO(List<User> users);
 }

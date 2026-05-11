@@ -18,6 +18,7 @@ import com.mstock.api.payload.Responde.GeneralResponde;
 import com.mstock.api.repositories.BatchRepository;
 import com.mstock.api.repositories.TransactionRepository;
 import com.mstock.api.repositories.UserRepository;
+import com.mstock.api.services.AuthContextService;
 import com.mstock.api.services.TransactionService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final BatchRepository batchRepository;
     private final UserRepository userRepository;
+    private final AuthContextService authContextService;
 
     @Override
     @Transactional
@@ -73,6 +75,8 @@ public class TransactionServiceImpl implements TransactionService {
         User user = null;
         if (transactionRequest.getUserId() != null) {
             user = userRepository.findByIdWithoutRelations(transactionRequest.getUserId()).orElse(null);
+        } else {
+            user = authContextService.getCurrentUser().orElse(null);
         }
         if (user == null) {
             return GeneralResponde.builder()

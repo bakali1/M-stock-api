@@ -12,6 +12,8 @@ import com.mstock.api.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long>{
 
+    Optional<User> findByEmailAndActiveTrue(String email);
+    Optional<User> findByUsernameAndActiveTrue(String username);
     boolean existsByEmail(String email);
 
     List<User> findByActiveTrue();

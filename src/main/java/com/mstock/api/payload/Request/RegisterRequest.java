@@ -19,7 +19,7 @@ public class RegisterRequest {
     private String username;
     private String password;
     private String email;
-    private UserRoleEnum Role;
+    private UserRoleEnum role;
     @Default
     private Boolean active = true;
 }
