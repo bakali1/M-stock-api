@@ -89,9 +89,7 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
     List<Batch> findByProductNsnCodeAndStatus(@Param("nsnCode") String nsnCode, @Param("status") BatchStatusEnum status);
 
     @Query("""
-    SELECT b
-    FROM Batch b
-    JOIN b.product p
+    SELECT b FROM Batch b
     WHERE
         (
             :key IS NULL OR :key = '' OR
@@ -100,12 +98,12 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 
             OR UPPER(b.lotNumber) LIKE UPPER(CONCAT('%', :key, '%'))
 
-            OR UPPER(p.name) LIKE UPPER(CONCAT('%', :key, '%'))
+            OR UPPER(b.product.name) LIKE UPPER(CONCAT('%', :key, '%'))
 
-            OR UPPER(p.nsnCode) LIKE UPPER(CONCAT('%', :key, '%'))
+            OR UPPER(b.product.nsnCode) LIKE UPPER(CONCAT('%', :key, '%'))
         )
 
         AND b.status = :status
     """)
-    List<Batch> searchBatches( @Param("key") String key, @Param("status") BatchStatusEnum status );
+    List<Batch> searchBatches( @Param("key") String key,@Param("status") BatchStatusEnum status);
 }
