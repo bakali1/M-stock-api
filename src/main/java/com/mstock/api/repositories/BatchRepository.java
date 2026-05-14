@@ -1,15 +1,16 @@
 package com.mstock.api.repositories;
 
-import com.mstock.api.Enum.BatchStatusEnum;
-import com.mstock.api.entities.Batch;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import com.mstock.api.Enum.BatchStatusEnum;
+import com.mstock.api.entities.Batch;
 
 /**
  * BatchRepository - JPA repository for Batch entity
@@ -86,4 +87,23 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
     
     @Query("SELECT b FROM Batch b WHERE UPPER(b.product.nsnCode) LIKE UPPER(CONCAT('%', :nsnCode, '%')) AND b.status = :status")
     List<Batch> findByProductNsnCodeAndStatus(@Param("nsnCode") String nsnCode, @Param("status") BatchStatusEnum status);
+
+    @Query("""
+    SELECT b FROM Batch b
+    WHERE
+        (
+            :key IS NULL OR :key = '' OR
+
+            UPPER(b.location) LIKE UPPER(CONCAT('%', :key, '%'))
+
+            OR UPPER(b.lotNumber) LIKE UPPER(CONCAT('%', :key, '%'))
+
+            OR UPPER(b.product.name) LIKE UPPER(CONCAT('%', :key, '%'))
+
+            OR UPPER(b.product.nsnCode) LIKE UPPER(CONCAT('%', :key, '%'))
+        )
+
+        AND b.status = :status
+    """)
+    List<Batch> searchBatches( @Param("key") String key,@Param("status") BatchStatusEnum status);
 }

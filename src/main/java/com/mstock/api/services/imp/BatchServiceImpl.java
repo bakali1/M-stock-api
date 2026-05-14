@@ -2,9 +2,7 @@ package com.mstock.api.services.imp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -253,18 +251,11 @@ public class BatchServiceImpl implements BatchService {
 
     @Override
     @Transactional(readOnly = true)
-    public GeneralResponde<List<BatchDTO>> searchBatches(String nsnCode, String lotNumber) {
+    public GeneralResponde<List<BatchDTO>> searchBatches(String key) {
         List<Batch> batches = new ArrayList<>();
 
-        if (nsnCode != null && !nsnCode.isEmpty()) {
-            batches.addAll(batchRepository.findByProductNsnCodeAndStatus(nsnCode, BatchStatusEnum.ACTIVE));
-    } 
-        if (lotNumber != null && !lotNumber.isEmpty()) {
-            System.out.println(lotNumber);
-            batches.addAll(batchRepository.searchByLotNumberLike(lotNumber, BatchStatusEnum.ACTIVE));
-        }
-        Set<Batch> test = new HashSet<>(batches);
-        batches = new ArrayList<Batch>(test);
+
+        batches.addAll(batchRepository.searchBatches(key,BatchStatusEnum.ACTIVE));
 
         List<BatchDTO> batchDTOs = batches.stream()
                 .map(BatchDTO::new)

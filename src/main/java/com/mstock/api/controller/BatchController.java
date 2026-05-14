@@ -1,11 +1,21 @@
 package com.mstock.api.controller;
 
-import com.mstock.api.payload.Responde.GeneralResponde;
-import com.mstock.api.payload.Request.BatchRequest;
-import com.mstock.api.services.BatchService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mstock.api.payload.Request.BatchRequest;
+import com.mstock.api.payload.Responde.GeneralResponde;
+import com.mstock.api.services.BatchService;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * BatchController - REST endpoints for batch management
@@ -56,9 +66,8 @@ public class BatchController {
 
     @GetMapping("/search")
     public ResponseEntity<GeneralResponde<?>> searchBatches(
-            @RequestParam(required = false) String nsnCode,
-            @RequestParam(required = false) String lotNumber) {
-        GeneralResponde<?> response = batchService.searchBatches(nsnCode, lotNumber);
+            @RequestParam(required = false) String key) {
+        GeneralResponde<?> response = batchService.searchBatches(key);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

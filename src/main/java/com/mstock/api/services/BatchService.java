@@ -55,7 +55,7 @@ public interface BatchService {
     /**
      * Search batches by NSN code or lot number (wildcard search)
      */
-    GeneralResponde<List<BatchDTO>> searchBatches(String nsnCode, String lotNumber);
+    GeneralResponde<List<BatchDTO>> searchBatches(String key);
 
     /**
      * Quarantine a batch (mark as QUARANTINE status)
